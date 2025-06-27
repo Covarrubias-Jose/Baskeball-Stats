@@ -342,7 +342,7 @@
   });
 
   localStorage.setItem("namesLocked", namesLocked ? "true" : "false");
-}
+
     namesLocked = !namesLocked;
     document.getElementById("lockNamesBtn").textContent = namesLocked ? "Unlock Names" : "Lock Names";
     document.getElementById("lockNamesBtn").classList.toggle("locked", namesLocked);
