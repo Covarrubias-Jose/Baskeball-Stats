@@ -200,7 +200,7 @@
     }
   
 .content-wrapper {
-  background-color: rgba(255, 255, 255, 0.92);
+  background-color: rgba(255, 255, 255, 0.7);
   padding: 20px;
   border-radius: 12px;
   max-width: 1000px;
@@ -313,7 +313,16 @@
          <div>Points: ${s.point}</div>`;
   }
 
-  function toggleLockNames() {
+  function toggleLockNames(forceState = null) {
+  namesLocked = forceState !== null ? forceState : !namesLocked;
+  document.getElementById("lockNamesBtn").textContent = namesLocked ? "Unlock Names" : "Lock Names";
+  document.getElementById("lockNamesBtn").classList.toggle("locked", namesLocked);
+  document.querySelectorAll(".edit-input").forEach(input => {
+    input.disabled = namesLocked;
+    input.classList.toggle("hidden-input", namesLocked);
+  });
+  localStorage.setItem("namesLocked", namesLocked ? "true" : "false");
+
     namesLocked = !namesLocked;
     document.getElementById("lockNamesBtn").textContent = namesLocked ? "Unlock Names" : "Lock Names";
     document.getElementById("lockNamesBtn").classList.toggle("locked", namesLocked);
