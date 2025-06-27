@@ -265,6 +265,10 @@
     }
 
     function loadState() {
+      const savedLock = localStorage.getItem("namesLocked");
+if (savedLock === "true") {
+  toggleLockNames(true);
+}
       const dataStr = localStorage.getItem('basketballStatTrackerState');
       if (!dataStr) return;
       try {
