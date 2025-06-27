@@ -330,7 +330,7 @@
          <div>Points: ${s.point}</div>`;
   }
 
-  function toggleLockNames(forceState = null) {
+function toggleLockNames(forceState = null) {
   namesLocked = forceState !== null ? forceState : !namesLocked;
 
   document.getElementById("lockNamesBtn").textContent = namesLocked ? "Unlock Names" : "Lock Names";
@@ -342,17 +342,9 @@
   });
 
   localStorage.setItem("namesLocked", namesLocked ? "true" : "false");
+  saveState();
+}
 
-    namesLocked = !namesLocked;
-    document.getElementById("lockNamesBtn").textContent = namesLocked ? "Unlock Names" : "Lock Names";
-    document.getElementById("lockNamesBtn").classList.toggle("locked", namesLocked);
-
-    document.querySelectorAll(".edit-input").forEach(input => {
-      input.disabled = namesLocked;
-      input.classList.toggle("hidden-input", namesLocked);
-    });
-    saveState();
-  }
 
   function generateReport() {
     const now = new Date();
