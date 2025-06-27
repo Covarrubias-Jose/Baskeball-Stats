@@ -272,14 +272,9 @@
         rivalScore = data.rivalScore || 0;
         namesLocked = data.namesLocked || false;
       } catch {}
-    }
+    
 
-  const savedTeamScore = localStorage.getItem("teamScore");
-  if (savedTeamScore !== null) {
-    teamScore = parseInt(savedTeamScore);
-    document.getElementById("teamScore").textContent = teamScore;
-  localStorage.setItem("teamScore", teamScore);
-  }
+
 
 
       const dataStr = localStorage.getItem('basketballStatTrackerState');
