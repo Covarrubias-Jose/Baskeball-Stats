@@ -198,13 +198,13 @@
         grid-template-columns: repeat(2, 1fr);
       }
     }
-  .content-wrapper {
-  background-color: rgba(255, 255, 255, 0.7);
-  padding: 20px;
-  border-radius: 12px;
-  max-width: 1000px;
-  margin: auto;
-  box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+    .content-wrapper {
+    background-color: rgba(255, 255, 255, 0.7);
+    padding: 20px;
+    border-radius: 12px;
+    max-width: 1000px;
+    margin: auto;
+    box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
 }
   </style>
 </head>
@@ -342,7 +342,7 @@
   });
 
   localStorage.setItem("namesLocked", namesLocked ? "true" : "false");
-
+}
     namesLocked = !namesLocked;
     document.getElementById("lockNamesBtn").textContent = namesLocked ? "Unlock Names" : "Lock Names";
     document.getElementById("lockNamesBtn").classList.toggle("locked", namesLocked);
@@ -420,7 +420,7 @@
       btn.onclick = () => assignStat(p.id);
 
       const input = document.createElement("input");
-      input.className = "edit-input";
+      input.className = "edit-input hidden-input";
       input.value = p.name;
       input.onchange = e => {
         if (namesLocked) return e.target.value = p.name;
