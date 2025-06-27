@@ -157,6 +157,16 @@
   <button id="lockNamesBtn" onclick="toggleLockNames()">Lock Names</button>
   <button id="reportBtn" onclick="generateReport()">End of Game Report</button>
   <button id="resetStatsBtn" onclick="resetStats()">Reset Stats</button>
+
+  <!-- Report Overlay -->
+  <div id="reportOverlay">
+    <div id="reportBox">
+      <h2>End of Game Report</h2>
+      <pre id="reportContent" style="white-space: pre-wrap;"></pre>
+      <button id="copyReportBtn" onclick="copyReport()">Copy Report</button>
+      <button id="closeReport" onclick="document.getElementById('reportOverlay').style.display='none'">Close</button>
+    </div>
+  </div>
   <script>
     let players = Array.from({ length: 10 }, (_, i) => ({ id: i, name: `Player ${i + 1}` }));
     let currentAction = null;
@@ -236,28 +246,59 @@
       saveState();
     }
 
-    function generateReport() {
-      const now = new Date();
-      const formattedDate = now.toISOString().slice(0, 19).replace('T', ' ');
-      const content = players.map(p => {
-        const s = stats[p.id];
-        return `${p.name}:\n  Shots: ${s.shot}\n  Rebounds: ${s.rebound}\n  Assists: ${s.assist}\n  Points: ${s.point}`;
-      }).join("\n\n");
-      const reportText = `DATE: ${formattedDate}\n\nFINAL SCORE\nTeam: ${teamScore} | Rival: ${rivalScore}\n\n${content}`;
-      alert(reportText); // placeholder for your report modal
-    }
+  function generateReport() {
+    const now = new Date();
+    const formattedDate = now.toISOString().slice(0, 19).replace('T', ' ');
 
-    function resetStats() {
-      players.forEach(p => {
-        stats[p.id] = { shot: 0, rebound: 0, assist: 0, point: 0 };
-        updateStatsDisplay(p.id);
-      });
-      teamScore = 0;
-      rivalScore = 0;
-      document.getElementById("teamScore").textContent = teamScore;
-      document.getElementById("rivalScore").textContent = rivalScore;
-      saveState();
+    const content = players.map(p => {
+      const s = stats[p.id];
+      return `${p.name}:\n  Shots: ${s.shot}\n  Rebounds: ${s.rebound}\n  Assists: ${s.assist}\n  Points: ${s.point}`;
+    }).join("\n\n");
+
+    const reportText = `DATE: ${formattedDate}\n\nFINAL SCORE\nTeam: ${teamScore} | Rival: ${rivalScore}\n\n${content}`;
+
+    document.getElementById("reportContent").textContent = reportText;
+    document.getElementById("reportOverlay").style.display = "flex";
+  }
+
+  function copyReport() {
+    const reportText = document.getElementById("reportContent").textContent;
+
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(reportText)
+        .then(() => alert("Report copied to clipboard!"))
+        .catch(() => fallbackCopyText(reportText));
+    } else {
+      fallbackCopyText(reportText);
     }
+  }
+
+  function fallbackCopyText(text) {
+    const textarea = document.createElement("textarea");
+    textarea.value = text;
+    document.body.appendChild(textarea);
+    textarea.select();
+    try {
+      const successful = document.execCommand('copy');
+      alert(successful ? "Report copied to clipboard!" : "Please copy manually.");
+    } catch (err) {
+      alert("Copy failed. Please select and copy manually.");
+    }
+    document.body.removeChild(textarea);
+  }
+  function resetStats() {
+    players.forEach(p => {
+      stats[p.id] = { shot: 0, rebound: 0, assist: 0, point: 0 };
+      updateStatsDisplay(p.id);
+    });
+    teamScore = 0;
+    rivalScore = 0;
+    document.getElementById("teamScore").textContent = teamScore;
+  localStorage.setItem("teamScore", teamScore);
+    document.getElementById("rivalScore").textContent = rivalScore;
+  localStorage.setItem("rivalScore", rivalScore);
+    saveState();
+  }
 
     window.onload = () => {
       loadState();
@@ -294,8 +335,10 @@
         updateStatsDisplay(p.id);
       });
       document.getElementById("teamScore").textContent = teamScore;
+  localStorage.setItem("teamScore", teamScore);
       document.getElementById("rivalScore").textContent = rivalScore;
-    };
+  localStorage.setItem("rivalScore", rivalScore);
+  };
   </script>
   </div>
 </body>
