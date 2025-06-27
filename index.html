@@ -8,11 +8,6 @@
   <title>Basketball Stat Tracker</title>
   <style>
     body {
-  background-image: url("ball.jpg");
-  background-size: cover;
-  background-repeat: no-repeat;
-  background-position: center center;
-  background-attachment: fixed;
       font-family: Arial, sans-serif;
       background-color: #f4f4f4;
       margin: 0;
@@ -198,8 +193,7 @@
         grid-template-columns: repeat(2, 1fr);
       }
     }
-  
-.content-wrapper {
+  .content-wrapper {
   background-color: rgba(255, 255, 255, 0.7);
   padding: 20px;
   border-radius: 12px;
@@ -207,11 +201,9 @@
   margin: auto;
   box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
 }
-</style>
-
+  </style>
 </head>
 <body>
-  <div class="content-wrapper">
   <h1 style="text-align:center;">Basketball Stat Tracker</h1>
 
   <div class="stat-buttons">
@@ -265,10 +257,24 @@
     }
 
     function loadState() {
-      const savedLock = localStorage.getItem("namesLocked");
-if (savedLock === "true") {
-  toggleLockNames(true);
-}
+  const savedLock = localStorage.getItem("namesLocked");
+  if (savedLock === "true") {
+    toggleLockNames(true);
+  }
+
+  const savedTeamScore = localStorage.getItem("teamScore");
+  if (savedTeamScore !== null) {
+    teamScore = parseInt(savedTeamScore);
+    document.getElementById("teamScore").textContent = teamScore;
+  localStorage.setItem("teamScore", teamScore);
+  }
+
+  const savedRivalScore = localStorage.getItem("rivalScore");
+  if (savedRivalScore !== null) {
+    rivalScore = parseInt(savedRivalScore);
+    document.getElementById("rivalScore").textContent = rivalScore;
+  localStorage.setItem("rivalScore", rivalScore);
+  }
       const dataStr = localStorage.getItem('basketballStatTrackerState');
       if (!dataStr) return;
       try {
@@ -294,6 +300,7 @@ if (savedLock === "true") {
         stats[id][currentAction] += 2;
         teamScore += 2;
         document.getElementById("teamScore").textContent = teamScore;
+  localStorage.setItem("teamScore", teamScore);
       } else {
         stats[id][currentAction]++;
       }
@@ -304,6 +311,7 @@ if (savedLock === "true") {
   function addRivalPoint() {
     rivalScore += 2;
     document.getElementById("rivalScore").textContent = rivalScore;
+  localStorage.setItem("rivalScore", rivalScore);
     saveState();
   }
 
@@ -319,14 +327,17 @@ if (savedLock === "true") {
 
   function toggleLockNames(forceState = null) {
   namesLocked = forceState !== null ? forceState : !namesLocked;
+
   document.getElementById("lockNamesBtn").textContent = namesLocked ? "Unlock Names" : "Lock Names";
   document.getElementById("lockNamesBtn").classList.toggle("locked", namesLocked);
+
   document.querySelectorAll(".edit-input").forEach(input => {
     input.disabled = namesLocked;
     input.classList.toggle("hidden-input", namesLocked);
   });
-  localStorage.setItem("namesLocked", namesLocked ? "true" : "false");
 
+  localStorage.setItem("namesLocked", namesLocked ? "true" : "false");
+}
     namesLocked = !namesLocked;
     document.getElementById("lockNamesBtn").textContent = namesLocked ? "Unlock Names" : "Lock Names";
     document.getElementById("lockNamesBtn").classList.toggle("locked", namesLocked);
@@ -387,12 +398,13 @@ if (savedLock === "true") {
     teamScore = 0;
     rivalScore = 0;
     document.getElementById("teamScore").textContent = teamScore;
+  localStorage.setItem("teamScore", teamScore);
     document.getElementById("rivalScore").textContent = rivalScore;
+  localStorage.setItem("rivalScore", rivalScore);
     saveState();
   }
 
   window.onload = () => {
-  loadState();
     const grid = document.getElementById("playerGrid");
     players.forEach(p => {
       const container = document.createElement("div");
@@ -425,7 +437,9 @@ if (savedLock === "true") {
         updateStatsDisplay(p.id);
       });
       document.getElementById("teamScore").textContent = teamScore;
+  localStorage.setItem("teamScore", teamScore);
       document.getElementById("rivalScore").textContent = rivalScore;
+  localStorage.setItem("rivalScore", rivalScore);
   };
 </script>
 <script>
@@ -436,6 +450,5 @@ if (savedLock === "true") {
   }
 </script>
 
-  </div>
 </body>
 </html>
