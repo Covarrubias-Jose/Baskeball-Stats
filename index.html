@@ -262,10 +262,17 @@
     }
 
     function loadState() {
-  const savedLock = localStorage.getItem("namesLocked");
-  if (savedLock === "true") {
-    toggleLockNames(true);
-  }
+      const dataStr = localStorage.getItem('basketballStatTrackerState');
+      if (!dataStr) return;
+      try {
+        const data = JSON.parse(dataStr);
+        players = data.players;
+        Object.assign(stats, data.stats);
+        teamScore = data.teamScore || 0;
+        rivalScore = data.rivalScore || 0;
+        namesLocked = data.namesLocked || false;
+      } catch {}
+    }
 
   const savedTeamScore = localStorage.getItem("teamScore");
   if (savedTeamScore !== null) {
@@ -274,12 +281,7 @@
   localStorage.setItem("teamScore", teamScore);
   }
 
-  const savedRivalScore = localStorage.getItem("rivalScore");
-  if (savedRivalScore !== null) {
-    rivalScore = parseInt(savedRivalScore);
-    document.getElementById("rivalScore").textContent = rivalScore;
-  localStorage.setItem("rivalScore", rivalScore);
-  }
+
       const dataStr = localStorage.getItem('basketballStatTrackerState');
       if (!dataStr) return;
       try {
