@@ -8,6 +8,11 @@
   <title>Basketball Stat Tracker</title>
   <style>
     body {
+  background-image: url("bkbg.jpg");
+  background-size: cover;
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-attachment: fixed;
       font-family: Arial, sans-serif;
       background-color: #f4f4f4;
       margin: 0;
@@ -193,9 +198,20 @@
         grid-template-columns: repeat(2, 1fr);
       }
     }
-  </style>
+  
+.content-wrapper {
+  background-color: rgba(255, 255, 255, 0.92);
+  padding: 20px;
+  border-radius: 12px;
+  max-width: 1000px;
+  margin: auto;
+  box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+}
+</style>
+
 </head>
 <body>
+  <div class="content-wrapper">
   <h1 style="text-align:center;">Basketball Stat Tracker</h1>
 
   <div class="stat-buttons">
@@ -407,5 +423,6 @@
   }
 </script>
 
+  </div>
 </body>
 </html>
